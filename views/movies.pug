@@ -1,24 +1,19 @@
 html
-	include includes/head.pug
-	.movies
-		each movie in movies
-			.movie
-				img(src=movie.img)
+	head
+		title MovieJS
+		link(rel='preconnect' href='https://fonts.gstatic.com')
+		link(href='https://fonts.googleapis.com/css2?family=Open+Sans&display=swap' rel='stylesheet')
+		link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+		link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css')
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js')
 
-	.container
-		//- h2 Large Modal
-		//- // Trigger the modal with a button
-		//- button.btn.btn-info.btn-lg(type='button' data-toggle='modal' data-target='#myModal') Open Large Modal
-		// Modal
-		#myModal.modal.fade(role='dialog')
-			.modal-dialog.modal-lg
-				.modal-content
-					.modal-header
-						button.close(type='button' data-dismiss='modal') ×
-						h4.modal-title 15% de réduction sur la commande
-					.modal-body
-						input(placeholder='Prix de la commande' id='input_prix' onkeyup="calculPrix()")
-						br
-						p(id='prix' style='font-size: 20px; font-weight: 800;') Prix avec la réduction :
-					.modal-footer
-						button.btn.btn-default(type='button' data-dismiss='modal') Fermer
+		style
+			include ./css/style.css
+
+	body
+		.movies
+			each movie in movies
+				.movie
+					a(href='http://localhost:5000/movie/'+movie.filename)
+						img(src=movie.img)

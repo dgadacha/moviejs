@@ -27,6 +27,11 @@ body {
   margin: 10px;
 }
 
+.movie:hover {
+  transform: scale(1.05);
+  transition: 0.3s;
+}
+
 .movie img {
   width: 100%;
 }
