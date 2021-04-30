@@ -57,7 +57,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/movie/:title', (req, res) => {
-  res.render('movie', { title: 'http://localhost:5000/video/'+req.params.title });
+  res.render('movie', { title: 'http://localhost:5000/video/'+req.params.title, subs: 'http://localhost:5000/subtitle/'+req.params.title });
 });
 
 app.get('/video/:title', (req, res) => {
@@ -99,6 +99,51 @@ app.get('/video/:title', (req, res) => {
           const head = {
               'Content-Length': fileSize,
               'Content-Type': 'video/mp4',
+          }
+
+          res.writeHead(200, head);
+          fs.createReadStream(path).pipe(res);
+      }
+  });
+});
+
+app.get('/subtitle/:title', (req, res) => {
+  // play the video
+  // https://webomnizz.com/video-stream-example-with-nodejs-and-html5/
+
+  const path = 'public/media/'+req.params.title+'.vtt';
+
+
+  fs.stat(path, (err, stat) => {
+
+      // Handle file not found
+      if (err !== null && err.code === 'ENOENT') {
+          res.sendStatus(404);
+      }
+
+      const fileSize = stat.size
+      const range = req.headers.range
+
+      if (range) {
+
+          const parts = range.replace(/bytes=/, "").split("-");
+
+          const start = parseInt(parts[0], 10);
+          const end = parts[1] ? parseInt(parts[1], 10) : fileSize-1;
+          
+          const chunksize = (end-start)+1;
+          const file = fs.createReadStream(path, {start, end});
+          const head = {
+              'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+              'Accept-Ranges': 'bytes',
+              'Content-Length': chunksize,
+          }
+          
+          res.writeHead(206, head);
+          file.pipe(res);
+      } else {
+          const head = {
+              'Content-Length': fileSize,
           }
 
           res.writeHead(200, head);
