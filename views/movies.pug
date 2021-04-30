@@ -1,0 +1,24 @@
+html
+	include includes/head.pug
+	.movies
+		each movie in movies
+			.movie
+				img(src=movie.img)
+
+	.container
+		//- h2 Large Modal
+		//- // Trigger the modal with a button
+		//- button.btn.btn-info.btn-lg(type='button' data-toggle='modal' data-target='#myModal') Open Large Modal
+		// Modal
+		#myModal.modal.fade(role='dialog')
+			.modal-dialog.modal-lg
+				.modal-content
+					.modal-header
+						button.close(type='button' data-dismiss='modal') ×
+						h4.modal-title 15% de réduction sur la commande
+					.modal-body
+						input(placeholder='Prix de la commande' id='input_prix' onkeyup="calculPrix()")
+						br
+						p(id='prix' style='font-size: 20px; font-weight: 800;') Prix avec la réduction :
+					.modal-footer
+						button.btn.btn-default(type='button' data-dismiss='modal') Fermer
