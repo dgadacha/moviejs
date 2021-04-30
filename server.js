@@ -114,8 +114,6 @@ app.get('/subtitle/:title', (req, res) => {
 
   const path = 'public/media/'+req.params.title+'.vtt'
   const srt = 'public/media/'+req.params.title+'.srt'
-  var rq = req;
-  var rs = res;
 
   fs.stat(srt, (err, stat) => {
     if (err !== null && err.code === 'ENOENT') {}
@@ -131,7 +129,6 @@ app.get('/subtitle/:title', (req, res) => {
           .pipe(fs.createWriteStream(path.split('.vtt')[0]+'.vtt'))
           .on('finish', function () { 
             console.log('.vtt created');
-            
            });
         } else {
             const fileSize = stat.size
