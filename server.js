@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+
 const fetch = require("node-fetch");
 
 const api_key = '59dfba860b7c84402018a22f1ec7aa9a';
@@ -14,7 +15,10 @@ const fs = require('fs');
 
 const port = process.env.PORT || 5000;
 const pug = require('pug');
-const e = require('express');
+
+
+
+
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'));
