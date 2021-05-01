@@ -9,7 +9,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
-
+        icon: __dirname + '/icon.png',
         // 1. Remove the frame of the window
         frame: false,
         webPreferences: {
@@ -20,7 +20,9 @@ function createWindow() {
         }
     })
 
-    mainWindow.loadFile('index.html')
+    mainWindow.loadFile('index.html');
+
+    mainWindow.maximize();
 }
 
 app.whenReady().then(() => {
