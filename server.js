@@ -32,6 +32,14 @@ for(var i=0;i<files.length;i++){
     };
 };
 
+// for(var i=0;i<files.length;i++){
+//   var filename=files[i];
+//   if (filename.split('.avi')[1] != undefined) {
+//       var name = filename.split('.avi')[0];
+//       searchByName(name);
+//   };
+// };
+
 var aMovies = [];
 
 app.use((req, res, next) => {
