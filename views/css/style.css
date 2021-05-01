@@ -45,6 +45,29 @@ video {
   height: calc(100% - 160px);
 }
 
+.blur {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: black;
+  opacity: 0.6;
+  display: block;
+  visibility: hidden;
+}
+
+.modal {
+  left: 10%;
+  top: 10%;
+  width: 80%;
+  height: 80%;
+  position: fixed;
+  background-color: black;
+  display: block;
+  visibility: hidden;
+}
+
 /* ------------------------------ scrollbar ------------------------------ */
 
 

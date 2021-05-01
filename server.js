@@ -22,16 +22,19 @@ app.use(bodyParser.json())
 
 // get movies in media dir
 
-var files=fs.readdirSync('public/media');
-
-for(var i=0;i<files.length;i++){
-    var filename=files[i];
-    if (filename.split('.mp4')[1] != undefined) {
-        var name = filename.split('.mp4')[0];
-        searchByName(name);
-    };
-};
 var aMovies = [];
+getMovies();
+
+function getMovies() {
+  var files=fs.readdirSync('public/media');
+  for(var i=0;i<files.length;i++){
+      var filename=files[i];
+      if (filename.split('.mp4')[1] != undefined) {
+          var name = filename.split('.mp4')[0];
+          searchByName(name);
+      };
+  };
+}
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

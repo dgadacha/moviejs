@@ -11,9 +11,15 @@ html
 		style
 			include ./css/style.css
 
+		script
+			include ./js/script.js
+
 	body
 		.movies
 			each movie in movies
 				.movie
-					a(href='http://localhost:5000/movie/'+movie.filename)
-						img(src=movie.img)
+					//- a(href='http://localhost:5000/movie/'+movie.filename)
+					img(src=movie.img onclick='modal("'+movie.title+","+movie.img+","+movie.description+'")')
+
+		.blur(onclick='modal()')
+		.modal
