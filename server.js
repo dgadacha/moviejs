@@ -31,15 +31,6 @@ for(var i=0;i<files.length;i++){
         searchByName(name);
     };
 };
-
-// for(var i=0;i<files.length;i++){
-//   var filename=files[i];
-//   if (filename.split('.avi')[1] != undefined) {
-//       var name = filename.split('.avi')[0];
-//       searchByName(name);
-//   };
-// };
-
 var aMovies = [];
 
 app.use((req, res, next) => {
@@ -72,9 +63,11 @@ app.get('/movie/:title', (req, res) => {
 app.get('/video/:title', (req, res) => {
   // play the video
   // https://webomnizz.com/video-stream-example-with-nodejs-and-html5/
-
+  // can't work with .avi
 
   const path = 'public/media/'+req.params.title+'.mp4';
+
+  var mime = 'video/mp4';
 
   fs.stat(path, (err, stat) => {
 
@@ -99,7 +92,7 @@ app.get('/video/:title', (req, res) => {
               'Content-Range': `bytes ${start}-${end}/${fileSize}`,
               'Accept-Ranges': 'bytes',
               'Content-Length': chunksize,
-              'Content-Type': 'video/mp4',
+              'Content-Type': mime,
           }
           
           res.writeHead(206, head);
@@ -107,7 +100,7 @@ app.get('/video/:title', (req, res) => {
       } else {
           const head = {
               'Content-Length': fileSize,
-              'Content-Type': 'video/mp4',
+              'Content-Type': mime,
           }
 
           res.writeHead(200, head);
@@ -207,7 +200,7 @@ class Movie {
         this.title = title;
         this.description = description;
         this.img = img;
-        this.results = "";
+        this.results = results;
     }
 }
 
