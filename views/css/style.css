@@ -24,12 +24,14 @@ body {
 }
 
 .movie {
+  transform: scale(1);
+  transition: 0.3s;
   width: calc(20% - 20px);
   margin: 10px;
 }
 
 .movie:hover {
-  transform: scale(1.05);
+  transform: scale(0.9);
   transition: 0.3s;
 }
 
