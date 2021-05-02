@@ -7,7 +7,7 @@ html
     script
       include ./js/script.js
 
-  body
+  body(onload='toudoum()')
     video(controls autoplay)
       source(src=title type='video/mp4')
       track(label='English' kind='subtitles' srclang='en' src=subtitles default='')

@@ -1,9 +1,6 @@
-const { app, BrowserWindow } = require('electron')
-// const path = require('path')
 const express = require('express');
 const bodyParser = require('body-parser');
-const nodeServer = express();
-
+const app = express();
 const fetch = require("node-fetch");
 
 const api_key = '59dfba860b7c84402018a22f1ec7aa9a';
@@ -17,29 +14,29 @@ const fs = require('fs');
 
 const port = process.env.PORT || 5000;
 const pug = require('pug');
+const e = require('express');
 
-
-
-
-
-nodeServer.use(bodyParser.urlencoded({ extended: true }))
-nodeServer.use(express.static('public'));
-nodeServer.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static('public'));
+app.use(bodyParser.json())
 
 // get movies in media dir
 
-var files=fs.readdirSync('public/media');
-
-for(var i=0;i<files.length;i++){
-    var filename=files[i];
-    if (filename.split('.mp4')[1] != undefined) {
-        var name = filename.split('.mp4')[0];
-        searchByName(name);
-    };
-};
 var aMovies = [];
+getMovies();
 
-nodeServer.use((req, res, next) => {
+function getMovies() {
+  var files=fs.readdirSync('public/media');
+  for(var i=0;i<files.length;i++){
+      var filename=files[i];
+      if (filename.split('.mp4')[1] != undefined) {
+          var name = filename.split('.mp4')[0];
+          searchByName(name);
+      };
+  };
+}
+
+app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
 
   // authorized headers for preflight requests
@@ -47,26 +44,26 @@ nodeServer.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 
-  nodeServer.options('*', (req, res) => {
+  app.options('*', (req, res) => {
       // allowed XHR methods  
       res.header('Access-Control-Allow-Methods', 'GET, PATCH, PUT, POST, DELETE, OPTIONS');
       res.send();
   });
 });
 
-nodeServer.set('view engine','pug');
+app.set('view engine','pug');
 
 
 // recuperer la liste des clients
-nodeServer.get('/', (req, res) => {
+app.get('/', (req, res) => {
   res.redirect('/movies');
 });
 
-nodeServer.get('/movie/:title', (req, res) => {
+app.get('/movie/:title', (req, res) => {
   res.render('movie', { title: 'http://localhost:5000/video/'+req.params.title, subtitles: 'http://localhost:5000/subtitle/'+req.params.title });
 });
 
-nodeServer.get('/video/:title', (req, res) => {
+app.get('/video/:title', (req, res) => {
   // play the video
   // https://webomnizz.com/video-stream-example-with-nodejs-and-html5/
   // can't work with .avi
@@ -115,7 +112,7 @@ nodeServer.get('/video/:title', (req, res) => {
   });
 });
 
-nodeServer.get('/subtitle/:title', (req, res) => {
+app.get('/subtitle/:title', (req, res) => {
   // play the video
   // https://webomnizz.com/video-stream-example-with-nodejs-and-html5/
 
@@ -172,28 +169,13 @@ nodeServer.get('/subtitle/:title', (req, res) => {
   })
 });
 
-nodeServer.get('/movies', (req, res) => {
+app.get('/movies', (req, res) => {
   res.render('movies', {movies: aMovies});
 });
 
 
-nodeServer.listen(port, () => {
+app.listen(port, () => {
 console.log(`Server is listening on port ${port}`);
-app.whenReady().then(() => {
-    createWindow()
-  
-    app.on('activate', () => {
-      if (BrowserWindow.getAllWindows().length === 0) {
-        createWindow()
-      }
-    })
-  })
-  
-  app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-      app.quit()
-    }
-  })
 });
 
 async function searchByName(name) {
@@ -230,27 +212,3 @@ function sleep(ms) {
     setTimeout(resolve, ms);
   });
 }   
-let mainWindow;
-
-function createWindow() {
-
-    // Create the browser window.
-    mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
-        icon: __dirname + '/icon.png',
-        // 1. Remove the frame of the window
-        frame: false,
-        webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
-
-            // 2. Enable Node.js integration
-            nodeIntegration: true
-        }
-    })
-
-    mainWindow.loadFile('index.html');
-
-    mainWindow.maximize();
-}
-
